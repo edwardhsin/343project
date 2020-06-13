@@ -191,10 +191,10 @@ public class Program {
         	else if (menuSelect == 2) {
         		
         	}
-			else if (menuSelect == 3) {
+		else if (menuSelect == 3) {
 			        		
-			}
-			else if (menuSelect == 4) {
+		}
+		else if (menuSelect == 4) {
 				/*
 				 * annual summary should have function for this
 			       sumRent;   floats
@@ -210,8 +210,8 @@ public class Program {
 			       
 					balance = sumRent - sumExpense
 			 */
-			}
-			else if (menuSelect == 5) {
+		}
+		else if (menuSelect == 5) {
         		tenantList.displayAllTenantInfo();
         		menu.specifySecondInputs(menuSelect);
         		strInput = inputStr.nextLine();
@@ -221,17 +221,17 @@ public class Program {
         			tenantList.addTenant(new Tenant (   strInput  ,   integerInput   ) );
         		}
         	}
-			else if (menuSelect == 6) {
-				//rentList.displayAllRentPaymenyts
-				menu.specifySecondInputs(menuSelect);
-			}
-			else if (menuSelect == 7) {
+		else if (menuSelect == 6) {
+			//rentList.displayAllRentPaymenyts
+			menu.specifySecondInputs(menuSelect);
+		}
+		else if (menuSelect == 7) {
 				
 	        	
-			}
-			else  {
+		}
+		else  {
 	        	System.out.println("invalid selection");
-			}
+		}
         	
         	System.out.println("Return to Menu (y/n)");
         	continueStr = inputStr.nextLine();
