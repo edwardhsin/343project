@@ -217,7 +217,7 @@ public class Program {
         		strInput = inputStr.nextLine();
         		integerInput = inputInt.nextInt();
         		
-        		if (isEmptyAndExists) {
+        		if (tenantList.verifyRoom(integerInput)) {
         			tenantList.addTenant(new Tenant (   strInput  ,   integerInput   ) );
         		}
         	}
