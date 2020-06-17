@@ -3,6 +3,11 @@ import java.util.List;
 import java.util.Scanner;
 
 class inputScreen{
+	public void enterUsernamePassword(String user, String pass) {
+		if (!user.equals("username") && !pass.equals("password")) {
+			System.exit(0);
+		}
+	}
 	public void displayMenu() {
 		System.out.println("(1) Display Tenant List \n"
 						+ "(2) Display Rent Record \n"
@@ -13,34 +18,53 @@ class inputScreen{
 						+ "(7) Add Expense Payment  ");
 	}
 	
+	
+	public void selectOption(int insertNum) {
+		switch (insertNum) {
+			case 1:
+				System.out.println("you chose to display tenant list1");
+				break;
+			case 2:
+				System.out.println("you chose to display rent records");
+				break;
+			case 3:
+				System.out.println("you chose to display expense records");
+				break;
+			case 4:
+				System.out.println("you chose to display annual summary...");
+				break;
+			case 5:
+				System.out.println("you chose to add new tenant");
+				break;
+			case 6:
+				System.out.println("you chose to add new rent payment");
+				break;
+			case 7:
+				System.out.println("you chose to add new expense payment");
+				break;
+		}
+	}
+	
 	public void specifySecondInputs(int insertNum) {
-		if (insertNum == 1 ) {
-			System.out.println("you chose to display tenant list\n");
+		switch (insertNum) {
+			case 5:
+				System.out.println("Enter a name and room number");
+				break;
+			case 6:
+				System.out.println("Enter a room, name, amt (in that order)");
+				break;
+			case 7:
+				System.out.println("Enter a month, date, payee, amt (in that order)");
+				break;
 		}
-		else if (insertNum == 2) {
-			System.out.println("you chose to display rent records");
-		}
-		else if (insertNum == 3) {
-			System.out.println("you chose to display expense records");
-		}
-		else if (insertNum == 4) {
-			System.out.println("you chose to display annual summary...");
-		}
-		else if (insertNum == 5 ) {
-			System.out.println("you chose to add new tenant");
-			System.out.println("Enter a name and room number");
-		}
-		else if (insertNum == 6 ) {
-			System.out.println("you chose to add new rent payment");
-			System.out.println("Enter a room, name, amt (in that order)");
-		}
-		else if (insertNum == 7 ) {
-			System.out.println("you chose to add new expense payment");
-			System.out.println("Enter a month, date, payee, amt (in that order)");
+	}
+	
+	public void enterTenantInfo(String insertName, int insertRoom, tenantRecord insertList) {
+		if (insertList.verifyRoom(insertRoom)) {
+			insertList.addTenant(new Tenant(insertName, insertRoom));
 		}
 		
 	}
-	
 }
 
 // geeks for geeks  composition library-book example
@@ -81,13 +105,19 @@ class tenantRecord
     	System.out.println( "tenant record size: " + tenantS.size());
     }
     
+    public int enterTenantInfo(String insertName, int insertRoom) {
+    	return insertRoom;
+    }
+    
     public boolean verifyRoom(int insertNum) {
-    	if (insertNum < 101 && insertNum > 120) {
+    	if (insertNum < 101 || insertNum > 120) {
+    		System.out.println("room doesnt exist");
     		return false;
     	}
-    	else
+    	else 
     		for (int i = 0; i < tenantS.size() ; i++) {
     			if (tenantS.get(i).getTenantRoom() == insertNum) {
+    				System.out.println("room occupied");
     				return false;
     			}
     		}
@@ -129,27 +159,22 @@ public class Program {
         
         Scanner inputStr = new Scanner(System.in); 
         Scanner inputInt = new Scanner(System.in); 
+        /*
+        String user = "username";
+        String pass = "password";
+        System.out.println("Enter username: ");
+        String userStr = inputStr.nextLine();
+        System.out.println("Enter Password: ");
+        String passStr = inputStr.nextLine();
+        
+        if (!userStr.equals(user) && !passStr.equals(pass)) {
+        	System.out.println("Wrong username-password");
+        }
+        
+        */
         
         inputScreen menu = new inputScreen();
-        //menu.displayMenu();
-        
-        // initilize all the lists first  ->   List<Book> books = new ArrayList<Book>(); 
-        
-        /*
-        List<Tenant> allTenantsExample = new ArrayList<Tenant>();
-        
-        System.out.println("size: " + allTenantsExample.size());
-        allTenantsExample.add(new Tenant("John Smith", 101 ));
-        allTenantsExample.add(new Tenant("Jane Doe", 102 ));
-        System.out.println("size: " + allTenantsExample.size());
-        System.out.println("index 0: " + allTenantsExample.get(0).getName() + " , " + allTenantsExample.get(0).getTenantRoom());
-        allTenantsExample.get(0).tenantTest();
-        */
-       // tenantList TenantRecord = new tenantList(allTenantsExample); ^^^ need 2 lists, inefficient
-        
-        
-        // ***Working sample here
-        // add tenant one by one to record
+    
         tenantRecord tenantList = new tenantRecord();
         tenantList.getSize(); // initially 0
         tenantList.addTenant(new Tenant("John Smith", 101 ));
@@ -158,19 +183,17 @@ public class Program {
         String name3 = "Sam W";
         int room3 = 103;
         tenantList.addTenant(new Tenant( name3  , room3  ));
-        tenantList.getSize(); // now 3
         
-        tenantList.displayAllTenantInfo();
         boolean isEmptyAndExists = tenantList.verifyRoom(101);
         System.out.println(isEmptyAndExists);
         
-        isEmptyAndExists = tenantList.verifyRoom(115);
+        isEmptyAndExists = tenantList.verifyRoom(300);
         System.out.println(isEmptyAndExists);
         
-        System.out.println("\n\n\n");
-        
-        
-        
+        if(tenantList.verifyRoom(300)) {
+        	System.out.println("101010101");
+        }
+    
         // while loop  while(string continue = "y")
         String continueStr = "y";
         int menuSelect = 0;
@@ -181,57 +204,46 @@ public class Program {
         while (continueStr.equalsIgnoreCase("y") ) {
         	menu.displayMenu();
         	menuSelect = inputInt.nextInt();
-        	System.out.println("you selected choice " + menuSelect);
-        	//menu.specifySecondInputs(menuSelect);
         	
-        	if (menuSelect == 1) {
-        		menu.specifySecondInputs(menuSelect);
-        		tenantList.displayAllTenantInfo();
+        	menu.selectOption(menuSelect);
+        	
+        	switch (menuSelect) {
+        	  case 1:
+        		  tenantList.displayAllTenantInfo();
+        		  break;
+        	  case 2:
+        		  
+        		  break;
+        	  case 3:
+        		  
+        		  break;
+        	  case 4:
+        		  
+        		  break;
+        	  case 5:
+        		  menu.specifySecondInputs(menuSelect);
+        		  
+        		  strInput = inputStr.nextLine();
+        		  integerInput = inputInt.nextInt();
+        		  
+        		  menu.enterTenantInfo(strInput, integerInput, tenantList);
+        		  
+        		  /*
+        		  if (tenantList.verifyRoom(integerInput)) {
+        			  tenantList.addTenant(new Tenant(strInput, integerInput));
+        		  }
+        		  */
+	        	  break;
+        	  case 6:
+        		  
+        		  break;
+        	  case 7:
+        		  
+	        	  break;
+        	  default:
+        		  System.out.println("invalid selection");
+        		  break;
         	}
-        	else if (menuSelect == 2) {
-        		
-        	}
-		else if (menuSelect == 3) {
-			        		
-		}
-		else if (menuSelect == 4) {
-				/*
-				 * annual summary should have function for this
-			       sumRent;   floats
-			       sumExpense;
-			       balance;
-			       
-			       for (i = 0; i < rentList.size; i++){
-			       		sumRent += rentList.get(i).getAmt();
-			       }
-			       for (i = 0; i < expenseList.size; i++){
-			       		sumExpense += rentList.get(i).getAmt();
-			       }
-			       
-					balance = sumRent - sumExpense
-			 */
-		}
-		else if (menuSelect == 5) {
-        		tenantList.displayAllTenantInfo();
-        		menu.specifySecondInputs(menuSelect);
-        		strInput = inputStr.nextLine();
-        		integerInput = inputInt.nextInt();
-        		
-        		if (tenantList.verifyRoom(integerInput)) {
-        			tenantList.addTenant(new Tenant (   strInput  ,   integerInput   ) );
-        		}
-        	}
-		else if (menuSelect == 6) {
-			//rentList.displayAllRentPaymenyts
-			menu.specifySecondInputs(menuSelect);
-		}
-		else if (menuSelect == 7) {
-				
-	        	
-		}
-		else  {
-	        	System.out.println("invalid selection");
-		}
         	
         	System.out.println("Return to Menu (y/n)");
         	continueStr = inputStr.nextLine();
