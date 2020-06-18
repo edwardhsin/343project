@@ -64,31 +64,31 @@ class inputScreen{
 		}
 	}
 	
-	public void enterTenantInfo(String insertName, int insertRoom, tenantRecord insertTList, rentRecord insertRList) {
+	public void enterTenantInfo(String insertName, int insertRoom, tenantRecord insertTList) {
+		//check if room is empty and exists
 		if (insertTList.verifyRoom(insertRoom)) {
-			insertTList.addTenant(new Tenant(insertName, insertRoom), insertRList);
-			
-			// each tenant added will create a rent row in RentRecord   .. moved to addTenantFunc
-			//	insertRList.addRentRow(new rentRow(insertName ,insertRoom)m insertRList);
-			
+			insertTList.addTenant(new Tenant(insertName, insertRoom));
+
 			System.out.println("new tenant added successfully");
 		}
 	}
 	
-	public void enterRentPaymentInfo(String insertName, int insertRoom, int insertMonth, int insertAmt, rentRecord insertRList) {
+	public void enterRentPaymentInfo(String insertName, int insertRoom, int insertMonth, int insertAmt, rentRecord insertRList, tenantRecord insertTList) {
 		//insertRList.rentData.get(1).rentArray[insertMonth] = 999;
 		
-		// verify and the loop to check is redundant
-		if( insertRList.verifyTenantAndRoom(insertName, insertRoom) ) {
+		// check if tenant and room exist in tenantList
+		if( insertTList.verifyTenantAndRoom(insertName, insertRoom) ) {
 			for (int i = 0; i < insertRList.getSize(); i++) {
-				if (insertRList.rentData.get(i).rentArray[0] == insertRoom && insertRList.rentData.get(i).name.equals(insertName)) {
-					insertRList.rentData.get(i).rentArray[insertMonth] = insertAmt;
+				if (insertRList.rentData.get(i).rentArray[0] == insertRoom) {
+					//insertRList.rentData.get(i).rentArray[insertMonth] = insertAmt;
+					// following sequence
+					//insertRList.rentData.get(i).makeRentPayment(insertMonth, insertAmt);
+					// following sequence
+					
+					insertRList.recieveInfo(i, insertMonth, insertAmt);
+					System.out.println("rent payment added successfully");
 				}
 			}
-			
-			
-			
-			System.out.println("rent payment added successfully");
 		}
 		
 	}
@@ -112,9 +112,8 @@ class tenantRecord
     	
     } 
       
-    public void addTenant(Tenant insertTenant, rentRecord insertRList) {
+    public void addTenant(Tenant insertTenant) {
     	tenantS.add(insertTenant);
-    	insertRList.addRentRow(new rentRow(insertTenant.name, insertTenant.roomNum));
     }
     
     public List<Tenant> returnList(){ 
@@ -155,7 +154,7 @@ class tenantRecord
     	
     }
     
-    /*
+    
     public boolean verifyTenantAndRoom(String insertName, int insertRoom) {
     	for (int i = 0; i < tenantS.size(); i++) {
     		if(tenantS.get(i).getName().equals(insertName) && tenantS.get(i).getTenantRoom() == insertRoom) {
@@ -167,7 +166,7 @@ class tenantRecord
     	System.out.println("invalid: Tenant or Room doesnt exist");
     	return false;
     }
-    */
+    
 } 
 
 
@@ -247,6 +246,10 @@ class rentRecord
     public int getSize() {
     	return rentData.size();
     }
+    
+    public void recieveInfo(int index, int month, int room) {
+    	rentData.get(index).makeRentPayment(month, room);
+    }
    
 }
 
@@ -258,17 +261,12 @@ class rentRow{
     
     public int[] rentArray = new int[13]; // int elemnets defaults to 0
       
-    rentRow(String insertName, int insertRoom) 
+    rentRow(int insertRoom) 
     {
-    	this.name = insertName;
-        this.roomNum = insertRoom; 
-        
         this.rentArray[0] = insertRoom;
-        //this.month = insertMonth;     setters for array[]; irrevelant for obj attrib
-        //this.amt = insertAmt;
     } 
     
-    public void makePaymentToMonth(int insertMonth, int insertAmt) {
+    public void makeRentPayment(int insertMonth, int insertAmt) {
     	// index[0] is room num ,  index[1 - 12] shall be jan - dec
     	rentArray[insertMonth] = insertAmt;
     }
@@ -307,17 +305,13 @@ public class Program {
         tenantRecord tenantList = new tenantRecord();
         rentRecord rentList = new rentRecord();
         
-        tenantList.addTenant(new Tenant("John Smith", 101 ), rentList);
-        tenantList.addTenant(new Tenant("Jane Doe", 102), rentList ) ;
-        tenantList.addTenant(new Tenant("Sam W"  , 103), rentList );
+        tenantList.addTenant(new Tenant("John Smith", 101 ));
+        tenantList.addTenant(new Tenant("Jane Doe", 102) ) ;
+        tenantList.addTenant(new Tenant("Sam W"  , 103));
         
-        
-        /*
-        rentList.addRentRow(new rentRow("John Smith", 101 ));  // this function should also verify tenant and room... in which class is important
-        rentList.addRentRow(new rentRow("John WWWW", 101  ));   // no tenant with name WWW
-        rentList.addRentRow(new rentRow("John Smith", 999 ));  // no room 999
-        rentList.addRentRow(new rentRow("Jane Do", 102 )); 
-        */
+        for (int i = 101; i < 121 ; i++) {
+        	rentList.addRentRow(new rentRow(i));
+        }
     
         String continueStr = "y";
         int menuSelect = 0;
@@ -354,7 +348,7 @@ public class Program {
         		  strInput = inputStr.nextLine();
         		  integerInput = inputInt.nextInt();
         		  
-        		  menu.enterTenantInfo(strInput, integerInput, tenantList, rentList);
+        		  menu.enterTenantInfo(strInput, integerInput, tenantList);
         		  
 	        	  break;
         	  case 6:
@@ -367,7 +361,7 @@ public class Program {
         		  integerInput2 = inputInt.nextInt();
         		  integerInput3 = inputInt.nextInt();
         		  
-        		  menu.enterRentPaymentInfo(strInput, integerInput, integerInput2, integerInput3, rentList);
+        		  menu.enterRentPaymentInfo(strInput, integerInput, integerInput2, integerInput3, rentList, tenantList);
         		  
         		  break;
         	  case 7:
