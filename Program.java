@@ -59,7 +59,7 @@ class inputScreen{
 				System.out.println("Enter a name, room, month, amt (in that order)");
 				break;
 			case 7:
-				System.out.println("Enter a month, date, payee, amt (in that order)");
+				System.out.println("Enter a month, date, payee, amt, category (in that order)");
 				break;
 		}
 	}
@@ -76,7 +76,7 @@ class inputScreen{
 	public void enterRentPaymentInfo(String insertName, int insertRoom, int insertMonth, int insertAmt, rentRecord insertRList, tenantRecord insertTList) {
 		//insertRList.rentData.get(1).rentArray[insertMonth] = 999;
 		
-		// check if tenant and room exist in tenantList
+		// check if tenant and room pair exist in tenantList
 		if( insertTList.verifyTenantAndRoom(insertName, insertRoom) ) {
 			for (int i = 0; i < insertRList.getSize(); i++) {
 				if (insertRList.rentData.get(i).rentArray[0] == insertRoom) {
@@ -91,6 +91,11 @@ class inputScreen{
 			}
 		}
 		
+	}
+	
+	public void enterExpensePaymentInfo(int insertMonth, int insertDate, String insertPayee, int insertAmt, String insertCat, expenseRecord insertEList) {
+		insertEList.addExpense(new expensePayment(  insertMonth,  insertDate,  insertPayee,  insertAmt,  insertCat     ));
+		System.out.println("expense payment added successfully");
 	}
 }
 
@@ -278,10 +283,68 @@ class rentRow{
     	System.out.println();
     }
     
- 
-	
 }
 
+class expenseRecord{
+	ArrayList<expensePayment> expenseRecordList = new ArrayList<expensePayment>(); 
+	
+	expenseRecord(){
+		 
+	}
+	
+	public void addExpense(expensePayment insertExpensePayment) {
+		expenseRecordList.add(insertExpensePayment);
+	}
+	
+	public List<expensePayment> getExpenseRecordList (){
+		return expenseRecordList;
+	}
+	
+    public void displayAllExpense() {
+    	System.out.println("Expense Record display");
+    	System.out.println("Date\tPayee\t\tAmt\tCategory");
+    	for (int i = 0; i < expenseRecordList.size() ; i++) {
+    		System.out.println(  expenseRecordList.get(i).getMonth() + "/" + expenseRecordList.get(i).getDate() + "\t" + expenseRecordList.get(i).getPayee() + "\t" + expenseRecordList.get(i).getAmt() + "\t" + expenseRecordList.get(i).getCategory());
+    	}
+    	System.out.println();
+    }
+}
+
+class expensePayment{
+	public int month;
+	public int date;
+	public String category;
+	public String payee;
+	public int amt;
+	
+	expensePayment(int insertMonth, int insertDate, String insertPayee, int insertAmt, String insertCategory) {
+		this.month = insertMonth;
+		this.date = insertDate;
+		this.category = insertCategory;
+		this.payee = insertPayee;
+		this.amt = insertAmt;
+	}
+	
+	public int getMonth() {
+		return month;
+	}
+	
+	public int getDate() {
+		return date;
+	}
+	
+	public String getCategory() {
+		return category;
+	}
+	
+	public String getPayee() {
+		return payee;
+	}
+	
+	public int getAmt() {
+		return amt;
+	}
+}
 public class Program {
 	
 	public static void main(String[] args) {
@@ -304,10 +367,13 @@ public class Program {
     
         tenantRecord tenantList = new tenantRecord();
         rentRecord rentList = new rentRecord();
+        expenseRecord expenseList = new expenseRecord();
         
         tenantList.addTenant(new Tenant("John Smith", 101 ));
         tenantList.addTenant(new Tenant("Jane Doe", 102) ) ;
         tenantList.addTenant(new Tenant("Sam W"  , 103));
+        
+        expenseList.addExpense(new expensePayment(1,1,"Gas Comp",500,"Utilities"));
         
         for (int i = 101; i < 121 ; i++) {
         	rentList.addRentRow(new rentRow(i));
@@ -335,7 +401,7 @@ public class Program {
         		  rentList.displayRentPayments();
         		  break;
         	  case 3:
-        		  
+        		  expenseList.displayAllExpense();
         		  break;
         	  case 4:
         		  
@@ -365,6 +431,8 @@ public class Program {
         		  
         		  break;
         	  case 7:
+        		  expenseList.displayAllExpense();
+        		  menu.specifySecondInputs(menuSelect);
         		  
 	        	  break;
         	  default:
