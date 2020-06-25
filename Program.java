@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+// write to file
+import java.io.File;  // Import the File class
+import java.io.FileWriter;
+import java.io.IOException;  // Import the IOException class to handle errors
+import java.io.PrintWriter;
+
 class inputScreen{
 	public void enterUsernamePassword(String user, String pass) {
 		if (!user.equals("username") && !pass.equals("password")) {
@@ -347,8 +353,37 @@ class expensePayment{
 }
 public class Program {
 	
-	public static void main(String[] args) {
+	public static File createFile() {
+		try {
+		      File fileObject = new File("343group3_Output.txt");
+		      if (fileObject.createNewFile()) {
+		        System.out.println("File created: " + fileObject.getName());
+		        return fileObject;
+		      } else {
+		        System.out.println("File already exists.");
+		        return fileObject;
+		      }
+		    } catch (IOException e) {
+		      System.out.println("An error occurred.");
+		      e.printStackTrace();
+		    }
+		return null;
+	 }
+		
+		
+	
+	
+	public static void main(String[] args) throws IOException {
         System.out.println("--- main ---");
+        
+        File outputFile = createFile();
+        System.out.println(outputFile.getPath());
+        
+        FileWriter fw = new FileWriter(outputFile,true);
+  	  	PrintWriter pw = new PrintWriter(fw);
+  	  	
+	  	 pw.println("343 testing new output, once more");
+		  pw.close();
         
         Scanner inputStr = new Scanner(System.in); 
         Scanner inputInt = new Scanner(System.in); 
