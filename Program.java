@@ -4,11 +4,21 @@ import java.util.Scanner;
 
 // write to file
 import java.io.File;  // Import the File class
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;  // Import the IOException class to handle errors
+import java.io.PrintStream;
 import java.io.PrintWriter;
 
 class inputScreen{
+	PrintWriter inputPW;
+	File file;
+	
+	inputScreen(PrintWriter insertPW, File outputFile) {
+		this.inputPW = insertPW;
+		this.file = outputFile;
+	}
+	
 	public void enterUsernamePassword(String user, String pass) {
 		if (!user.equals("username") && !pass.equals("password")) {
 			System.out.println("oops wrong username password; end");
@@ -20,6 +30,7 @@ class inputScreen{
 		}
 	}
 	public void displayMenu() {
+		/*
 		System.out.println("(1) Display Tenant List \n"
 						+ "(2) Display Rent Record \n"
 						+ "(3) Display Expense Record \n"
@@ -27,13 +38,35 @@ class inputScreen{
 						+ "(5) Add New Tenant \n"
 						+ "(6) Add Rental Payment \n"
 						+ "(7) Add Expense Payment  ");
+		*/
+		
+		
+		writeToConsoleAndFile("from menu: " + file.getPath() + " \n(1) Display Tenant List \n"
+						+ "(2) Display Rent Record \n"
+						+ "(3) Display Expense Record \n"
+						+ "(4) Display Annual Summary \n"
+						+ "(5) Add New Tenant \n"
+						+ "(6) Add Rental Payment \n"
+						+ "(7) Add Expense Payment  ", System.out, inputPW);
+		
 	}
 	
+	/*
+	public void endProcessPW(){
+		inputPW.close();
+	}
+	*/
 	
+	public void writeToConsoleAndFile(String string, PrintStream out, PrintWriter pw2) {
+		out.println(string);
+		pw2.println(string);
+	}
+
 	public void selectOption(int insertNum) {
 		switch (insertNum) {
 			case 1:
-				System.out.println("you chose to display tenant list1");
+				//System.out.println("you chose to display tenant list1");
+				writeToConsoleAndFile("\nyou chose to display tenant list \n", System.out, inputPW);
 				break;
 			case 2:
 				System.out.println("you chose to display rent records");
@@ -110,6 +143,9 @@ class tenantRecord
 { 
     ArrayList<Tenant> tenantS = new ArrayList<Tenant>(); 
       
+    PrintWriter tenantRecordPW;
+    File file;
+    
     // unused constructor
     tenantRecord (List<Tenant> insertListOfTenants) 
     { 
@@ -122,6 +158,11 @@ class tenantRecord
     { 
     	
     } 
+    
+    tenantRecord (PrintWriter insertPW, File outputFile) {
+		this.tenantRecordPW = insertPW;
+		this.file = outputFile;
+	}
       
     public void addTenant(Tenant insertTenant) {
     	tenantS.add(insertTenant);
@@ -131,10 +172,16 @@ class tenantRecord
        return tenantS;   
     } 
     
+    public void writeToConsoleAndFile(String string, PrintStream out, PrintWriter pw2) {
+		out.println(string);
+		pw2.println(string);
+	}
+    
     public void displayAllTenantInfo() {
     	System.out.println("\nTenant Record display");
     	for (int i = 0; i < tenantS.size() ; i++) {
-    		System.out.println(  tenantS.get(i).getTenantRoom()  + " - " + tenantS.get(i).getName()   );
+    		//System.out.println(  tenantS.get(i).getTenantRoom()  + " - " + tenantS.get(i).getName()   );
+    		writeToConsoleAndFile(tenantS.get(i).getTenantRoom()  + " - " + tenantS.get(i).getName(), System.out, tenantRecordPW  );
     	}
     	System.out.println();
     }
@@ -351,6 +398,8 @@ class expensePayment{
 		return amt;
 	}
 }
+
+
 public class Program {
 	
 	public static File createFile() {
@@ -370,8 +419,13 @@ public class Program {
 		return null;
 	 }
 		
-		
-	
+	/*	
+	public static void writeToConsoleAndFile(String msg, PrintStream console, PrintWriter pw) {        
+		console.println(msg);
+		pw.println(msg);
+		//pw.close();
+	}
+	*/
 	
 	public static void main(String[] args) throws IOException {
         System.out.println("--- main ---");
@@ -379,12 +433,19 @@ public class Program {
         File outputFile = createFile();
         System.out.println(outputFile.getPath());
         
+       
+        
+        
         FileWriter fw = new FileWriter(outputFile,true);
   	  	PrintWriter pw = new PrintWriter(fw);
   	  	
-	  	 pw.println("343 testing new output, once more");
-		  pw.close();
-        
+	  	// pw.println("343 testing new output, once more");
+		 
+		  int x = 11;  
+		 // it automatically converts x into a string
+         //writeToConsoleAndFile("---Main---" + x  , System.out, pw);
+        // pw.close();
+         
         Scanner inputStr = new Scanner(System.in); 
         Scanner inputInt = new Scanner(System.in); 
         
@@ -397,10 +458,12 @@ public class Program {
         String passStr = inputStr.nextLine();
         */
         
-        inputScreen menu = new inputScreen();
+        inputScreen menu = new inputScreen(pw, outputFile);
         //menu.enterUsernamePassword(user, pass);
+       // pw.close();
     
-        tenantRecord tenantList = new tenantRecord();
+        //tenantRecord tenantList = new tenantRecord();
+        tenantRecord tenantList = new tenantRecord(pw, outputFile);
         rentRecord rentList = new rentRecord();
         expenseRecord expenseList = new expenseRecord();
         
@@ -424,6 +487,7 @@ public class Program {
         
         while (continueStr.equalsIgnoreCase("y") ) {
         	menu.displayMenu();
+        	// pw.close();
         	menuSelect = inputInt.nextInt();
         	
         	menu.selectOption(menuSelect);
@@ -476,7 +540,17 @@ public class Program {
         	}
         	
         	System.out.println("Return to Menu (y/n)");
+        	pw.println("\nReturn to Menu (y/n)");
         	continueStr = inputStr.nextLine();
+        	pw.println(continueStr + "\n");
         }
+        pw.close();
+        //menu.endProcessPW();
+        /*
+        System.out.println("copystream1");
+        PrintStream printStream = new PrintStream(new FileOutputStream(outputFile));
+        System.setOut(printStream);
+        System.out.println("copystream2");
+        */
 	}
 }
