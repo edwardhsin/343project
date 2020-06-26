@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -69,22 +71,28 @@ class inputScreen{
 				writeToConsoleAndFile("\nyou chose to display tenant list \n", System.out, inputPW);
 				break;
 			case 2:
-				System.out.println("you chose to display rent records");
+				//System.out.println("you chose to display rent records");
+				writeToConsoleAndFile("\nyou chose to display rent records\" \n", System.out, inputPW);
 				break;
 			case 3:
-				System.out.println("you chose to display expense records");
+				//System.out.println("you chose to display expense records");
+				writeToConsoleAndFile("\nyou chose to display expense records \n", System.out, inputPW);
 				break;
 			case 4:
-				System.out.println("you chose to display annual summary...");
+				//System.out.println("you chose to display annual summary...");
+				writeToConsoleAndFile("\nyou chose to display annual summary \n", System.out, inputPW);
 				break;
 			case 5:
-				System.out.println("you chose to add new tenant");
+				//System.out.println("you chose to add new tenant");
+				writeToConsoleAndFile("\nyou chose to add new tenant \n", System.out, inputPW);
 				break;
 			case 6:
-				System.out.println("you chose to add new rent payment");
+				//System.out.println("you chose to add new rent payment");
+				writeToConsoleAndFile("\nyou chose to add new rent paymen \n", System.out, inputPW);
 				break;
 			case 7:
-				System.out.println("you chose to add new expense payment");
+				//System.out.println("you chose to add new expense payment");
+				writeToConsoleAndFile("\nyou chose to add new expense payment \n", System.out, inputPW);
 				break;
 		}
 	}
@@ -92,13 +100,16 @@ class inputScreen{
 	public void specifySecondInputs(int insertNum) {
 		switch (insertNum) {
 			case 5:
-				System.out.println("Enter a name and room number");
+				//System.out.println("Enter a name and room number");
+				writeToConsoleAndFile("\nEnter a name and room number \n", System.out, inputPW);
 				break;
 			case 6:
-				System.out.println("Enter a name, room, month, amt (in that order)");
+				//System.out.println("Enter a name, room, month, amt (in that order)");
+				writeToConsoleAndFile("\nEnter a name, room, month, amt (in that order) \n", System.out, inputPW);
 				break;
 			case 7:
-				System.out.println("Enter a month, date, payee, amt, category (in that order)");
+				//System.out.println("Enter a month, date, payee, amt, category (in that order)");
+				writeToConsoleAndFile("\nEnter a month, date, payee, amt, category (in that order) \n", System.out, inputPW);
 				break;
 		}
 	}
@@ -108,7 +119,8 @@ class inputScreen{
 		if (insertTList.verifyRoom(insertRoom)) {
 			insertTList.addTenant(new Tenant(insertName, insertRoom));
 
-			System.out.println("new tenant added successfully");
+			//System.out.println("new tenant added successfully");
+			writeToConsoleAndFile("\nnew tenant added successfully\n", System.out, inputPW);
 		}
 	}
 	
@@ -125,7 +137,8 @@ class inputScreen{
 					// following sequence
 					
 					insertRList.recieveInfo(i, insertMonth, insertAmt);
-					System.out.println("rent payment added successfully");
+					//System.out.println("rent payment added successfully");
+					writeToConsoleAndFile("\nrent payment added successfully\n", System.out, inputPW);
 				}
 			}
 		}
@@ -134,7 +147,8 @@ class inputScreen{
 	
 	public void enterExpensePaymentInfo(int insertMonth, int insertDate, String insertPayee, int insertAmt, String insertCat, expenseRecord insertEList) {
 		insertEList.addExpense(new expensePayment(  insertMonth,  insertDate,  insertPayee,  insertAmt,  insertCat     ));
-		System.out.println("expense payment added successfully");
+		//System.out.println("expense payment added successfully");
+		writeToConsoleAndFile("\nexpense payment added successfully\n", System.out, inputPW);
 	}
 }
 
@@ -198,13 +212,15 @@ class tenantRecord
     
     public boolean verifyRoom(int insertNum) {
     	if (insertNum < 101 || insertNum > 120) {
-    		System.out.println("room doesnt exist");
+    		//System.out.println("room doesnt exist");
+    		writeToConsoleAndFile("\nroom doesnt exist\n"   , System.out, tenantRecordPW  );
     		return false;
     	}
     	else 
     		for (int i = 0; i < tenantS.size() ; i++) {
     			if (tenantS.get(i).getTenantRoom() == insertNum) {
-    				System.out.println("room occupied");
+    				//System.out.println("room occupied");
+    				writeToConsoleAndFile("\nroom occupied\n"   , System.out, tenantRecordPW  );
     				return false;
     			}
     		}
@@ -216,12 +232,14 @@ class tenantRecord
     public boolean verifyTenantAndRoom(String insertName, int insertRoom) {
     	for (int i = 0; i < tenantS.size(); i++) {
     		if(tenantS.get(i).getName().equals(insertName) && tenantS.get(i).getTenantRoom() == insertRoom) {
-    			System.out.println("Room-Tenant found... returning true");
+    			//System.out.println("Room-Tenant found... returning true");
+    			writeToConsoleAndFile("\nRoom-Tenant found... returning true\n"   , System.out, tenantRecordPW  );
     			return true;
     		}
     	}
     	
-    	System.out.println("invalid: Tenant or Room doesnt exist");
+    	//System.out.println("invalid: Tenant or Room doesnt exist");
+    	writeToConsoleAndFile("\ninvalid: Tenant or Room doesnt exist\n"   , System.out, tenantRecordPW  );
     	return false;
     }
     
@@ -257,6 +275,23 @@ class rentRecord
 { 
     ArrayList<rentRow> rentData = new ArrayList<rentRow>();
     
+    PrintWriter rentRecordPW;
+    File file;
+    
+    rentRecord(PrintWriter insertPW, File outputFile){
+    	this.rentRecordPW = insertPW;
+    	this.file = outputFile;
+    }
+    
+    public ArrayList<rentRow> getrentData(){
+    	return rentData;
+    }
+    
+    public void writeToConsoleAndFile(String string, PrintStream out, PrintWriter pw2) {
+		out.print(string);
+		pw2.print(string);
+	}
+    
     // in main should be like    rList.addRentPayment( new rentPayment(name, roomNum, month, amt )
     public void addRentRow(rentRow insertRow) {
     	// verify funct for tenant and room//      if(verfiyRoomAndTenent) {
@@ -270,10 +305,15 @@ class rentRecord
     // list all rooms or only occupied rooms?
     
     public void displayRentPayments() {
-    	System.out.println("Apt\tJan\tFeb\tMar\tApr\tMay\tJun\tJly\tAug\tSept\tOct\tNov\tDec");
-   
+    	//System.out.println("Apt\tJan\tFeb\tMar\tApr\tMay\tJun\tJly\tAug\tSept\tOct\tNov\tDec");
+    	writeToConsoleAndFile("Apt\tJan\tFeb\tMar\tApr\tMay\tJun\tJly\tAug\tSept\tOct\tNov\tDec \n", System.out, rentRecordPW);
     	for (int i = 0; i < rentData.size(); i++) {
-    		rentData.get(i).printRentRow();
+    		///rentData.get(i).printRentRow();
+    		/// printRentRow is a sysoutprint... dont wanna introdue PW, file to rent...
+    		for (int j = 0; j < 13; j++) {
+    			writeToConsoleAndFile( Integer.toString(rentData.get(i).getIntAtIndex(j)) + "\t" , System.out, rentRecordPW);
+    		}
+    		writeToConsoleAndFile("\n", System.out, rentRecordPW);
     	}
     }
     
@@ -336,13 +376,33 @@ class rentRow{
     	System.out.println();
     }
     
+    public int getIntAtIndex(int insertIndex) {
+    	return rentArray[insertIndex];
+    }
+    
 }
 
 class expenseRecord{
 	ArrayList<expensePayment> expenseRecordList = new ArrayList<expensePayment>(); 
+	PrintWriter expRecordPW;
+	File file;
 	
 	expenseRecord(){
 		 
+	}
+	
+	public ArrayList<expensePayment> getexpenseRecordList(){
+		return expenseRecordList;
+	}
+	
+	expenseRecord(PrintWriter insertPW, File outputFile){
+		 this.expRecordPW = insertPW;
+		 this.file = outputFile;
+	}
+	
+	public void writeToConsoleAndFile(String string, PrintStream out, PrintWriter pw2) {
+		out.print(string);
+		pw2.print(string);
 	}
 	
 	public void addExpense(expensePayment insertExpensePayment) {
@@ -354,12 +414,17 @@ class expenseRecord{
 	}
 	
     public void displayAllExpense() {
-    	System.out.println("Expense Record display");
-    	System.out.println("Date\tPayee\t\tAmt\tCategory");
+    	//System.out.println("Expense Record display");
+    	writeToConsoleAndFile("Expense Record display \n", System.out, expRecordPW);
+    	//System.out.println("Date\tPayee\t\tAmt\tCategory");
+    	writeToConsoleAndFile("Date\tPayee\t\tAmt\tCategory \n", System.out, expRecordPW);
     	for (int i = 0; i < expenseRecordList.size() ; i++) {
-    		System.out.println(  expenseRecordList.get(i).getMonth() + "/" + expenseRecordList.get(i).getDate() + "\t" + expenseRecordList.get(i).getPayee() + "\t" + expenseRecordList.get(i).getAmt() + "\t" + expenseRecordList.get(i).getCategory());
+    		//System.out.println(  expenseRecordList.get(i).getMonth() + "/" + expenseRecordList.get(i).getDate() + "\t" + expenseRecordList.get(i).getPayee() + "\t" + expenseRecordList.get(i).getAmt() + "\t" + expenseRecordList.get(i).getCategory());
+    		writeToConsoleAndFile(expenseRecordList.get(i).getMonth() + "/" + expenseRecordList.get(i).getDate() + "\t" + expenseRecordList.get(i).getPayee() + "\t" + expenseRecordList.get(i).getAmt() + "\t" + expenseRecordList.get(i).getCategory(), System.out, expRecordPW);
+    		writeToConsoleAndFile("\n", System.out, expRecordPW);
     	}
-    	System.out.println();
+    	//System.out.println();
+    	writeToConsoleAndFile("\n", System.out, expRecordPW);
     }
 }
 
@@ -397,6 +462,54 @@ class expensePayment{
 	public int getAmt() {
 		return amt;
 	}
+}
+
+class annualReport {
+	public rentRecord RentRecords;
+	public ArrayList<rentRow> rentRecordList = new ArrayList<rentRow>();
+	public expenseRecord Expenses;
+	public ArrayList<expensePayment> expenseRecordList = new ArrayList<expensePayment>(); 
+	public HashMap<String, Integer> allExpenses = new HashMap<String, Integer>();
+	
+	annualReport(rentRecord insertrentRecord, expenseRecord insertExpenseRecord){
+		this.RentRecords=insertrentRecord;
+		this.Expenses=insertExpenseRecord;
+		this.expenseRecordList=insertExpenseRecord.getexpenseRecordList();
+		this.rentRecordList=insertrentRecord.getrentData();
+	}
+	public void calculateExpenses(){
+		for (int i = 0; i < expenseRecordList.size(); i++) {
+			// doesn't contain the key yet
+			if (!allExpenses.containsKey(expenseRecordList.get(i).category)) {
+				allExpenses.put(expenseRecordList.get(i).category, expenseRecordList.get(i).amt);
+			}
+			// it already exist in key
+			else {
+				int prevKeyAmt = allExpenses.get(expenseRecordList.get(i).category);
+				allExpenses.put(expenseRecordList.get(i).category, expenseRecordList.get(i).amt + prevKeyAmt);
+			}
+		}
+	}
+	
+	public int calculateRent(){
+        int total = 0;
+        for(rentRow r : rentRecordList){
+            for(int i = 1; i < 13; i++){
+                int value = r.rentArray[i];
+                total += value;
+            }
+        }
+        return total;
+    }
+	
+	public void displayCalculatedExpenses(){
+		for (String name: allExpenses.keySet()){
+            String key = name.toString();
+            String value = allExpenses.get(name).toString();  
+            System.out.println(key + " " + value);  
+		} 
+	}
+	
 }
 
 
@@ -464,19 +577,28 @@ public class Program {
     
         //tenantRecord tenantList = new tenantRecord();
         tenantRecord tenantList = new tenantRecord(pw, outputFile);
-        rentRecord rentList = new rentRecord();
-        expenseRecord expenseList = new expenseRecord();
+        //rentRecord rentList = new rentRecord();
+        rentRecord rentList = new rentRecord(pw, outputFile);
+        //expenseRecord expenseList = new expenseRecord();
+        expenseRecord expenseList = new expenseRecord(pw, outputFile);
         
         tenantList.addTenant(new Tenant("John Smith", 101 ));
         tenantList.addTenant(new Tenant("Jane Doe", 102) ) ;
         tenantList.addTenant(new Tenant("Sam W"  , 103));
         
+        
+        
         expenseList.addExpense(new expensePayment(1,1,"Gas Comp",500,"Utilities"));
+        expenseList.addExpense(new expensePayment(2,2,"Electric",500,"Utilities"));
+        
+        
         
         for (int i = 101; i < 121 ; i++) {
         	rentList.addRentRow(new rentRow(i));
         }
-    
+        
+        annualReport annualSummary = new annualReport(rentList, expenseList);
+        
         String continueStr = "y";
         int menuSelect = 0;
         
@@ -503,7 +625,9 @@ public class Program {
         		  expenseList.displayAllExpense();
         		  break;
         	  case 4:
-        		  
+        		  System.out.println("Rent income: " + annualSummary.calculateRent());
+        		  annualSummary.calculateExpenses();
+        		  annualSummary.displayCalculatedExpenses();
         		  break;
         	  case 5:
         		  tenantList.displayAllTenantInfo();
