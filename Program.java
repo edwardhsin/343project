@@ -142,7 +142,7 @@ class tenantRecord
     	tenantS.add(insertTenant);
     }
     
-    public List<Tenant> returnList(){ 
+    public List<Tenant> getTenantList(){ 
        return tenantS;   
     } 
     
@@ -225,7 +225,7 @@ class rentRecord
     	this.file = outputFile;
     }
     
-    public ArrayList<rentRow> getrentData(){
+    public ArrayList<rentRow> getRentData(){
     	return rentData;
     }
     
@@ -402,7 +402,7 @@ class annualReport {
 		this.RentRecords=insertrentRecord;
 		this.Expenses=insertExpenseRecord;
 		this.expenseRecordList=insertExpenseRecord.getexpenseRecordList();
-		this.rentRecordList=insertrentRecord.getrentData();
+		this.rentRecordList=insertrentRecord.getRentData();
 		this.annualPW = insertPW;
 		this.file = outputFile;
 	}
