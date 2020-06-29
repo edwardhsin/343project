@@ -133,6 +133,12 @@ class tenantRecord
         this.tenantS = (ArrayList<Tenant>) insertListOfTenants;  
     } 
     
+    
+    // for unit test
+    tenantRecord () {
+		
+	}
+    
     tenantRecord (PrintWriter insertPW, File outputFile) {
 		this.tenantRecordPW = insertPW;
 		this.file = outputFile;
