@@ -33,13 +33,14 @@ class inputScreen{
 	}
 	
 	public void displayMenu() {
-		writeToConsoleAndFile("from menu: " + file.getPath() + " \n(1) Display Tenant List \n"
+		writeToConsoleAndFile("----------------------------\nfilepath: " + file.getPath() + " \n(1) Display Tenant List \n"
 						+ "(2) Display Rent Record \n"
 						+ "(3) Display Expense Record \n"
 						+ "(4) Display Annual Summary \n"
 						+ "(5) Add New Tenant \n"
 						+ "(6) Add Rental Payment \n"
-						+ "(7) Add Expense Payment  ", System.out, inputPW);
+						+ "(7) Add Expense Payment \n"
+						+ "----------------------------\n  ", System.out, inputPW);
 		
 	}
 	
@@ -484,34 +485,24 @@ public class Program {
         File outputFile = createFile();
         System.out.println(outputFile.getPath());
         
-       
-        
-        
         FileWriter fw = new FileWriter(outputFile,true);
   	  	PrintWriter pw = new PrintWriter(fw);
   	  	
-	  	// pw.println("343 testing new output, once more");
-		 
-		  int x = 11;  
-		 // it automatically converts x into a string
-         //writeToConsoleAndFile("---Main---" + x  , System.out, pw);
-        // pw.close();
-         
         Scanner inputStr = new Scanner(System.in); 
         Scanner inputInt = new Scanner(System.in); 
         
-        /*
+        
         String user = "username";
         String pass = "password";
-        System.out.println("Enter username: ");
+        System.out.println("Enter 'username': ");
         String userStr = inputStr.nextLine();
-        System.out.println("Enter Password: ");
+        System.out.println("Enter 'password': ");
         String passStr = inputStr.nextLine();
-        */
+        
         
         inputScreen menu = new inputScreen(pw, outputFile);
-        //menu.enterUsernamePassword(user, pass);
-       // pw.close();
+        
+        menu.enterUsernamePassword(user, pass);
     
        
         tenantRecord tenantList = new tenantRecord(pw, outputFile);
