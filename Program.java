@@ -22,7 +22,7 @@ class inputScreen{
 	}
 	
 	public void enterUsernamePassword(String user, String pass) {
-		if (!user.equals("username") && !pass.equals("password")) {
+		if (!user.equals("username") || !pass.equals("password")) {
 			System.out.println("oops wrong username password; end");
 			System.exit(0);
 		}
@@ -33,7 +33,7 @@ class inputScreen{
 	}
 	
 	public void displayMenu() {
-		writeToConsoleAndFile("----------------------------\nfilepath: " + file.getPath() + " \n(1) Display Tenant List \n"
+		writeToConsoleAndFile("----------------------------\n(1) Display Tenant List \n"
 						+ "(2) Display Rent Record \n"
 						+ "(3) Display Expense Record \n"
 						+ "(4) Display Annual Summary \n"
@@ -343,7 +343,7 @@ class expenseRecord{
     	writeToConsoleAndFile("Expense Record display \n", System.out, expRecordPW);
     	writeToConsoleAndFile("Date\tPayee\t\tAmt\tCategory \n", System.out, expRecordPW);
     	for (int i = 0; i < expenseRecordList.size() ; i++) {
-    		writeToConsoleAndFile(expenseRecordList.get(i).getMonth() + "/" + expenseRecordList.get(i).getDate() + "\t" + expenseRecordList.get(i).getPayee() + "\t" + expenseRecordList.get(i).getAmt() + "\t" + expenseRecordList.get(i).getCategory(), System.out, expRecordPW);
+    		writeToConsoleAndFile(expenseRecordList.get(i).getMonth() + "/" + expenseRecordList.get(i).getDate() + "\t" + expenseRecordList.get(i).getPayee() + "\t\t" + expenseRecordList.get(i).getAmt() + "\t" + expenseRecordList.get(i).getCategory(), System.out, expRecordPW);
     		writeToConsoleAndFile("\n", System.out, expRecordPW);
     	}
     	writeToConsoleAndFile("\n", System.out, expRecordPW);
@@ -445,13 +445,13 @@ class annualReport {
 	
 	public void displayCalculatedExpenses(){
 		calculateRent();
-		writeToConsoleAndFile("---RENT---     total:   " + totalRent, System.out, annualPW);
+		writeToConsoleAndFile("---RENT---     total:   " + totalRent + "\n", System.out, annualPW);
 		calculateExpenses();
-		writeToConsoleAndFile("---EXPENSES--- total:   "  + totalExpense, System.out, annualPW);
+		writeToConsoleAndFile("---EXPENSES--- total:   "  + totalExpense + "\n", System.out, annualPW);
 		for (String name: allExpenses.keySet()){
             String key = name.toString();
             String value = allExpenses.get(name).toString();  
-            writeToConsoleAndFile("  - " + key + " " + value, System.out, annualPW);
+            writeToConsoleAndFile("  - " + key + " " + value + "\n", System.out, annualPW);
 		} 
 		balance = totalRent - totalExpense;
 		writeToConsoleAndFile("---BALANCE---  total:   "   +  balance + " \n", System.out, annualPW);
@@ -502,22 +502,21 @@ public class Program {
         
         inputScreen menu = new inputScreen(pw, outputFile);
         
-        menu.enterUsernamePassword(user, pass);
+        menu.enterUsernamePassword(userStr, passStr);
     
        
         tenantRecord tenantList = new tenantRecord(pw, outputFile);
         rentRecord rentList = new rentRecord(pw, outputFile);
         expenseRecord expenseList = new expenseRecord(pw, outputFile);
         
+        /*
         tenantList.addTenant(new Tenant("John Smith", 101 ));
         tenantList.addTenant(new Tenant("Jane Doe", 102) ) ;
         tenantList.addTenant(new Tenant("Sam W"  , 103));
         
-        
-        
         expenseList.addExpense(new expensePayment(1,1,"Gas Comp",500,"Utilities"));
         expenseList.addExpense(new expensePayment(2,2,"ElectricComp",500,"Electricity"));
-        
+        */
         
         
         for (int i = 101; i < 121 ; i++) {
@@ -530,9 +529,12 @@ public class Program {
         int menuSelect = 0;
         
         String strInput = "";
+        String strInput2 = "";
         int integerInput = 0;
         int integerInput2 = 0;
         int integerInput3 = 0;
+        int integerInput4 = 0;
+        int integerInput5 = 0;
         
         while (continueStr.equalsIgnoreCase("y") ) {
         	menu.displayMenu();
@@ -582,6 +584,13 @@ public class Program {
         		  expenseList.displayAllExpense();
         		  menu.specifySecondInputs(menuSelect);
         		  
+        		  integerInput = inputInt.nextInt();
+        		  integerInput2 = inputInt.nextInt();
+        		  strInput = inputStr.nextLine();
+        		  integerInput4 = inputInt.nextInt();
+        		  strInput2  = inputStr.nextLine();
+        		  
+        		  menu.enterExpensePaymentInfo(integerInput, integerInput2, strInput, integerInput4, strInput2, expenseList);
 	        	  break;
         	  default:
         		  System.out.println("invalid selection");
