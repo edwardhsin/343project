@@ -53,25 +53,25 @@ class inputScreen{
 	public void selectOption(int insertNum) {
 		switch (insertNum) {
 			case 1:
-				writeToConsoleAndFile("\nyou chose to display tenant list \n", System.out, inputPW);
+				writeToConsoleAndFile("you chose to display tenant list ", System.out, inputPW);
 				break;
 			case 2:
-				writeToConsoleAndFile("\nyou chose to display rent records\" \n", System.out, inputPW);
+				writeToConsoleAndFile("you chose to display rent records ", System.out, inputPW);
 				break;
 			case 3:
-				writeToConsoleAndFile("\nyou chose to display expense records \n", System.out, inputPW);
+				writeToConsoleAndFile("you chose to display expense records ", System.out, inputPW);
 				break;
 			case 4:
-				writeToConsoleAndFile("\nyou chose to display annual summary \n", System.out, inputPW);
+				writeToConsoleAndFile("you chose to display annual summary ", System.out, inputPW);
 				break;
 			case 5:
-				writeToConsoleAndFile("\nyou chose to add new tenant \n", System.out, inputPW);
+				writeToConsoleAndFile("you chose to add new tenant ", System.out, inputPW);
 				break;
 			case 6:
-				writeToConsoleAndFile("\nyou chose to add new rent paymen \n", System.out, inputPW);
+				writeToConsoleAndFile("you chose to add new rent paymen ", System.out, inputPW);
 				break;
 			case 7:
-				writeToConsoleAndFile("\nyou chose to add new expense payment \n", System.out, inputPW);
+				writeToConsoleAndFile("you chose to add new expense payment ", System.out, inputPW);
 				break;
 		}
 	}
@@ -79,13 +79,13 @@ class inputScreen{
 	public void specifySecondInputs(int insertNum) {
 		switch (insertNum) {
 			case 5:
-				writeToConsoleAndFile("\nEnter a name and room number \n", System.out, inputPW);
+				writeToConsoleAndFile("Enter a name and room number ", System.out, inputPW);
 				break;
 			case 6:
-				writeToConsoleAndFile("\nEnter a name, room, month, amt (in that order) \n", System.out, inputPW);
+				writeToConsoleAndFile("Enter a name, room, month, amt (in that order) ", System.out, inputPW);
 				break;
 			case 7:
-				writeToConsoleAndFile("\nEnter a month, date, payee, amt, category (in that order) \n", System.out, inputPW);
+				writeToConsoleAndFile("Enter a month, date, payee, amt, category (in that order) ", System.out, inputPW);
 				break;
 		}
 	}
@@ -167,7 +167,7 @@ class tenantRecord
     }
     
     public boolean verifyRoom(int insertNum) {
-    	if (insertNum < 101 || insertNum > 120) {
+    	if (insertNum < 101 || (insertNum > 110 && insertNum < 201) || insertNum > 210) {
     		writeToConsoleAndFile("\nroom doesnt exist\n"   , System.out, tenantRecordPW  );
     		return false;
     	}
@@ -519,7 +519,11 @@ public class Program {
         */
         
         
-        for (int i = 101; i < 121 ; i++) {
+        for (int i = 101; i < 111 ; i++) {
+        	rentList.addRentRow(new rentRow(i));
+        }
+        
+        for (int i = 201; i < 211 ; i++) {
         	rentList.addRentRow(new rentRow(i));
         }
         
