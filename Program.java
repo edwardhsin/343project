@@ -343,7 +343,7 @@ class expenseRecord{
     	writeToConsoleAndFile("Expense Record display \n", System.out, expRecordPW);
     	writeToConsoleAndFile("Date\tPayee\t\tAmt\tCategory \n", System.out, expRecordPW);
     	for (int i = 0; i < expenseRecordList.size() ; i++) {
-    		writeToConsoleAndFile(expenseRecordList.get(i).getMonth() + "/" + expenseRecordList.get(i).getDate() + "\t" + expenseRecordList.get(i).getPayee() + "\t\t" + expenseRecordList.get(i).getAmt() + "\t" + expenseRecordList.get(i).getCategory(), System.out, expRecordPW);
+    		writeToConsoleAndFile(expenseRecordList.get(i).getMonth() + "/" + expenseRecordList.get(i).getDate() + "\t" + expenseRecordList.get(i).getPayee() + "\t" + expenseRecordList.get(i).getAmt() + "\t" + expenseRecordList.get(i).getCategory(), System.out, expRecordPW);
     		writeToConsoleAndFile("\n", System.out, expRecordPW);
     	}
     	writeToConsoleAndFile("\n", System.out, expRecordPW);
@@ -444,6 +444,8 @@ class annualReport {
 	
 	
 	public void displayCalculatedExpenses(){
+		totalRent = 0;
+		totalExpense = 0;
 		calculateRent();
 		writeToConsoleAndFile("---RENT---     total:   " + totalRent + "\n", System.out, annualPW);
 		calculateExpenses();
@@ -528,6 +530,32 @@ public class Program {
         }
         
         annualReport annualSummary = new annualReport(pw, outputFile, rentList, expenseList);
+        
+        tenantList.addTenant(new Tenant("Harry Ellis",101));
+        tenantList.addTenant(new Tenant("Wanda Brown",102));
+        menu.enterTenantInfo("Peter Quan", 102, tenantList);
+        tenantList.addTenant(new Tenant("Peter Quan",103));
+        tenantList.addTenant(new Tenant("Bill Vasquez",104));
+        tenantList.addTenant(new Tenant("Jane Garth", 201));
+        
+        menu.enterRentPaymentInfo("Harry Ellis", 101, 1, 695, rentList, tenantList);
+        menu.enterRentPaymentInfo("Harry Ellis", 101, 2, 695, rentList, tenantList);
+        menu.enterRentPaymentInfo("John Ng", 101, 2, 695, rentList, tenantList);
+        menu.enterRentPaymentInfo("Harry Ellis", 101, 3, 695, rentList, tenantList);
+        menu.enterRentPaymentInfo("Harry Ellis", 101, 4, 695, rentList, tenantList);
+        menu.enterRentPaymentInfo("Harry Ellis", 101, 5, 695, rentList, tenantList);
+        
+        menu.enterRentPaymentInfo("Wanda Brown", 102, 1, 595, rentList, tenantList);
+        menu.enterRentPaymentInfo("Wanda Brown", 102, 2, 595, rentList, tenantList);
+        menu.enterRentPaymentInfo("Wanda Brown", 102, 3, 595, rentList, tenantList);
+        menu.enterRentPaymentInfo("Wanda Brown", 102, 4, 595, rentList, tenantList);
+        menu.enterRentPaymentInfo("Wanda Brown", 102, 5, 595, rentList, tenantList);
+        
+        menu.enterRentPaymentInfo("Peter Quan", 103, 1, 810, rentList, tenantList);
+        menu.enterRentPaymentInfo("Peter Quan", 103, 2, 810, rentList, tenantList);
+        
+        menu.enterExpensePaymentInfo(2, 15, "All State", 4840, "insurance", expenseList);
+        menu.enterExpensePaymentInfo(1, 2, "City Water", 978, "utilities", expenseList);
         
         String continueStr = "y";
         int menuSelect = 0;
