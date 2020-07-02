@@ -415,6 +415,7 @@ class annualReport {
 	}
 	
 	public void calculateExpenses(){
+		allExpenses.clear();
 		for (int i = 0; i < expenseRecordList.size(); i++) {
 			// doesn't contain the key yet
 			if (!allExpenses.containsKey(expenseRecordList.get(i).category)) {
@@ -446,6 +447,7 @@ class annualReport {
 	public void displayCalculatedExpenses(){
 		totalRent = 0;
 		totalExpense = 0;
+		
 		calculateRent();
 		writeToConsoleAndFile("---RENT---     total:   " + totalRent + "\n", System.out, annualPW);
 		calculateExpenses();
